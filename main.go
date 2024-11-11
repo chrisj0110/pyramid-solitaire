@@ -3,17 +3,24 @@ package main
 import(
     "fmt"
     "os"
+    "pyramid-solitaire/models"
 
     tea "github.com/charmbracelet/bubbletea"
 )
 
 type model struct {
-    testing string
+    // formation Formation
+    drawPile []models.Card
+    discardPile []models.Card
+    // livePile []models.Card (nullable)
 }
 
 func initialModel() model {
     return model{
-        testing: "testing",
+        // formation Formation
+        // drawPile: []models.Card{},
+        discardPile: []models.Card{},
+        // livePile []models.Card (nullable)
     }
 }
 
