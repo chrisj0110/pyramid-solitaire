@@ -10,15 +10,19 @@ import(
 
 type model struct {
     // formation Formation
-    drawPile []models.Card
+    drawPile models.Deck
     discardPile []models.Card
     // livePile []models.Card (nullable)
 }
 
 func initialModel() model {
+    var deck models.Deck
+    deck = deck.Init()
+    deck.Shuffle()
+
     return model{
         // formation Formation
-        // drawPile: []models.Card{},
+        drawPile: deck,
         discardPile: []models.Card{},
         // livePile []models.Card (nullable)
     }
