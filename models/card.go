@@ -1,8 +1,8 @@
 package models
 
 type Card struct {
-    rank CardRank
-    suit CardSuit
+    Rank CardRank
+    Suit CardSuit
 }
 
 type CardRank int
