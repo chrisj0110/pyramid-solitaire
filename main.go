@@ -10,7 +10,7 @@ import(
 
 type model struct {
     // formation Formation
-    drawPile models.Deck
+    deck models.Deck
     discardPile []models.Card
     // livePile []models.Card (nullable)
 }
@@ -22,7 +22,7 @@ func initialModel() model {
 
     return model{
         // formation Formation
-        drawPile: deck,
+        deck: deck,
         discardPile: []models.Card{},
         // livePile []models.Card (nullable)
     }
