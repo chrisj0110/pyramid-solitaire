@@ -9,10 +9,9 @@ import(
 )
 
 type model struct {
-    // formation Formation
+    formation [][]models.FormationSpot
     deck models.Deck
     discardPile []models.Card
-    // livePile []models.Card (nullable)
 }
 
 func initialModel() model {
@@ -21,10 +20,9 @@ func initialModel() model {
     deck.Shuffle()
 
     return model{
-        // formation Formation
+        formation: [][]models.FormationSpot{},
         deck: deck,
         discardPile: []models.Card{},
-        // livePile []models.Card (nullable)
     }
 }
 
