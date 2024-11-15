@@ -4,6 +4,7 @@ import (
     "fmt"
     "math/rand"
     "time"
+    "log"
 )
 
 type Deck struct {
@@ -17,6 +18,10 @@ func (d *Deck) Init() Deck {
         for rank := Ace; rank <= King; rank++ {
             deck.cards = append(deck.cards, Card{Rank: rank, Suit: suit})
         }
+    }
+
+    if deck.GetRemainingCount() != 52 {
+        log.Fatalf("Deck should be 52")
     }
 
     return deck
