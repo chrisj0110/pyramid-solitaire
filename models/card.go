@@ -7,8 +7,11 @@ type Card struct {
     Suit CardSuit
 }
 
-var redCard = lipgloss.NewStyle().Foreground(lipgloss.Color("9")).Background(lipgloss.Color("15"))
-var blackCard = lipgloss.NewStyle().Foreground(lipgloss.Color("0")).Background(lipgloss.Color("15"))
+var black = lipgloss.Color("0")
+var red = lipgloss.Color("9")
+var white = lipgloss.Color("15")
+var redCard = lipgloss.NewStyle().Foreground(red).Background(white)
+var blackCard = lipgloss.NewStyle().Foreground(black).Background(white)
 
 func (c Card) Render() string {
     content := " " + c.Rank.String() + c.Suit.String() + " "
