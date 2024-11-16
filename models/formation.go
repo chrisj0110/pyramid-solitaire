@@ -18,15 +18,23 @@ type Formation struct {
 
 func (d *Formation) Init(cards []Card) Formation {
     formation := Formation{formationSpots: make([][]FormationSpot, 7)}
-    for row := 0; row < 7; row ++ {
+    for row := 6; row >= 0; row -- {
         formation.formationSpots[row] = make([]FormationSpot, row + 1)
         for col := 0; col <= row; col ++ {
             poppedCard := cards[0]
             cards = cards[1:]
 
-            // TODO: setup coveredBy
-            formationSpot := FormationSpot {card: &poppedCard, coveredBy: []Location{}}
-            formation.formationSpots[row][col] = formationSpot
+            coveredBy := []Location{}
+            if row < 6 {
+                coveredBy = []Location{
+                    { row: row+1, col: col },
+                    { row: row+1, col: col+1 },
+                }
+            }
+            formation.formationSpots[row][col] = FormationSpot {
+                card: &poppedCard,
+                coveredBy: coveredBy,
+            }
         }
     }
 
