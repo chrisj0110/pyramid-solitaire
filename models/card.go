@@ -5,6 +5,10 @@ type Card struct {
     Suit CardSuit
 }
 
+func (c Card) Render() string {
+    return c.Rank.String() + c.Suit.String()
+}
+
 type CardRank int
 
 const (

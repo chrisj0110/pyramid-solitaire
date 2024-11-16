@@ -1,6 +1,8 @@
 package models
 
-import "log"
+import (
+    "log"
+)
 
 type Location struct {
     row int
@@ -16,7 +18,7 @@ type Formation struct {
     formationSpots [][]FormationSpot
 }
 
-func (d *Formation) Init(cards []Card) Formation {
+func (f *Formation) Init(cards []Card) Formation {
     formation := Formation{formationSpots: make([][]FormationSpot, 7)}
     for row := 6; row >= 0; row -- {
         formation.formationSpots[row] = make([]FormationSpot, row + 1)
@@ -42,4 +44,15 @@ func (d *Formation) Init(cards []Card) Formation {
         log.Fatalf("Expected 0 cards remaining")
     }
     return formation
+}
+
+func (f Formation) Render() string {
+    render := ""
+    for row := 0; row < len(f.formationSpots); row ++ {
+        for col := 0; col < len(f.formationSpots[row]); col ++ {
+            render += f.formationSpots[row][col].card.Render() + " "
+        }
+        render += "\n"
+    }
+    return render
 }

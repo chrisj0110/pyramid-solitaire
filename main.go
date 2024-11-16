@@ -57,9 +57,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    fmt.Println("m.formation: ", m.formation)
-    s := "Press q to exit"
-    return s
+    view := m.formation.Render()
+    return view
 }
 
 func main() {
