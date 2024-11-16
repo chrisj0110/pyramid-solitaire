@@ -27,14 +27,14 @@ func (d *Deck) Init() Deck {
     return deck
 }
 
-func (d Deck) Shuffle() {
+func (d *Deck) Shuffle() {
     rng := rand.New(rand.NewSource(time.Now().UnixNano()))
     rng.Shuffle(len(d.cards), func(i, j int) {
         d.cards[i], d.cards[j] = d.cards[j], d.cards[i]
     })
 }
 
-func (d Deck) Draw() (Card, error) {
+func (d *Deck) Draw() (Card, error) {
     if len(d.cards) == 0 {
         return Card{}, fmt.Errorf("deck is empty")
     }

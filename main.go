@@ -2,6 +2,7 @@ package main
 
 import(
     "fmt"
+    "log"
     "os"
     "pyramid-solitaire/models"
 
@@ -9,7 +10,7 @@ import(
 )
 
 type model struct {
-    formation [][]models.FormationSpot
+    formation models.Formation
     deck models.Deck
     discardPile []models.Card
 }
@@ -19,8 +20,21 @@ func initialModel() model {
     deck = deck.Init()
     deck.Shuffle()
 
+    var formationCards []models.Card
+    for i := 1; i <= 28; i++ {
+        card, err := deck.Draw()
+        if err != nil {
+            log.Fatalf("Error: %v", err)
+        }
+        formationCards = append(formationCards, card)
+    }
+    if deck.GetRemainingCount() != 52 - 28 {
+        log.Fatalf("Expected 24 cards remaining")
+    }
+
+    var formation models.Formation
     return model{
-        formation: [][]models.FormationSpot{},
+        formation: formation.Init(formationCards),
         deck: deck,
         discardPile: []models.Card{},
     }
@@ -43,6 +57,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
+    fmt.Println("m.formation: ", m.formation)
     s := "Press q to exit"
     return s
 }
