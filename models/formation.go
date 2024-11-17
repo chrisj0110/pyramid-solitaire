@@ -48,14 +48,14 @@ func (f *Formation) Init(cards []Card) Formation {
 }
 
 func (f Formation) Render() string {
-    ROW_OFFSETS := []int{18, 15, 12, 9, 6, 3, 0}
-    render := ""
+    ROW_OFFSETS := []int{1, 1, 1, 1, 1, 1, 1}
+    var rows []string
     for row := 0; row < len(f.formationSpots); row ++ {
-        render += strings.Repeat(" ", ROW_OFFSETS[row])
+        render := strings.Repeat(" ", ROW_OFFSETS[row])
         for col := 0; col < len(f.formationSpots[row]); col ++ {
             render += f.formationSpots[row][col].card.Render() + " "
         }
-        render += "\n"
+        rows = append(rows, render)
     }
-    return render
+    return strings.Join(rows, "\n")
 }
