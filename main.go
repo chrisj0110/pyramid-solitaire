@@ -1,12 +1,13 @@
 package main
 
-import(
-    "fmt"
-    "log"
-    "os"
-    "pyramid-solitaire/models"
+import (
+	"fmt"
+	"log"
+	"os"
+	"pyramid-solitaire/models"
 
-    tea "github.com/charmbracelet/bubbletea"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type model struct {
@@ -57,7 +58,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    view := m.formation.Render()
+    formationStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder())
+    formationStr := m.formation.Render()
+
+    view := formationStyle.Render(formationStr)
     return view
 }
 
