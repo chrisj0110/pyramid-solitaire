@@ -51,6 +51,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         switch msg.String() {
         case "ctrl+c", "q":
             return m, tea.Quit
+        case "n":
+            card, err := m.deck.Draw()
+            if err != nil {
+                // TODO: set an error message in the model to display
+                log.Fatalf("no cards left")
+            }
+            m.discardPile = append(m.discardPile, card)
+
+            return m, nil
         }
     }
 
@@ -62,6 +71,13 @@ func (m model) View() string {
     formationStr := m.formation.Render()
 
     view := formationStyle.Render(formationStr)
+
+    // TODO: this is just for testing
+    view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
+    if len(m.discardPile) > 0 {
+        view += fmt.Sprintf("\n%v top card in discard pile", m.discardPile[len(m.discardPile)-1].Render())
+    }
+
     return view
 }
 
