@@ -5,11 +5,15 @@ import (
     "math/rand"
     "time"
     "log"
+    "github.com/charmbracelet/lipgloss"
 )
 
 type Deck struct {
     cards []Card
 }
+
+var darkGreen = lipgloss.Color("22")
+var cardBack = lipgloss.NewStyle().Foreground(white).Background(darkGreen)
 
 func (d *Deck) Init() Deck {
     var deck Deck
@@ -25,6 +29,17 @@ func (d *Deck) Init() Deck {
     }
 
     return deck
+}
+
+func (d Deck) Render() string {
+    numberRemaining := d.GetRemainingCount()
+    numberRemainingStr := fmt.Sprintf("%v", numberRemaining)
+    if numberRemaining < 10 {
+        numberRemainingStr = fmt.Sprintf(" %v", numberRemaining)
+    }
+    content := " " + numberRemainingStr + " "
+
+    return cardBack.Render(content)
 }
 
 func (d *Deck) Shuffle() {
