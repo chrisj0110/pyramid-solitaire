@@ -2,6 +2,7 @@ package models
 
 import (
     "fmt"
+    "strings"
 )
 
 type DiscardPile struct {
@@ -17,5 +18,26 @@ func (dp *DiscardPile) Add(card Card) {
 }
 
 func (dp DiscardPile) Render() string {
-    return fmt.Sprintf("%v cards", len(dp.cards))
+    cardLen := len(dp.cards)
+
+    prefix := ""
+    cardsToShow := []Card{}
+    if cardLen == 0 {
+        prefix = "No cards"
+    } else if cardLen > 5 {
+        // if 7 cards, show indexes 2:6
+        // if 8 cards, show indexes 3:7
+        cardsToShow = dp.cards[cardLen-5:cardLen]
+        prefix = fmt.Sprintf("Last 5 of %v cards: ", cardLen)
+    } else {
+        prefix = "All cards: "
+        cardsToShow = dp.cards
+    }
+
+    cardStrs := []string{}
+    for i := 0; i < len(cardsToShow); i++ {
+        cardStrs = append(cardStrs, cardsToShow[i].Render())
+    }
+
+    return fmt.Sprintf("%v%v", prefix, strings.Join(cardStrs, " "))
 }
