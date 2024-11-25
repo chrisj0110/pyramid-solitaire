@@ -67,16 +67,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    formationStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder())
-    formationStr := m.formation.Render()
+    formationView := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Render(m.formation.Render())
+    formationTitle := lipgloss.NewStyle().Bold(true).Render(" Pyramid ")
 
-    view := formationStyle.Render(formationStr)
+    view := lipgloss.JoinVertical(lipgloss.Center, formationTitle, formationView)
 
     // TODO: this is just for testing
-    view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
-    if len(m.discardPile) > 0 {
-        view += fmt.Sprintf("\n%v top card in discard pile", m.discardPile[len(m.discardPile)-1].Render())
-    }
+    // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
+    // if len(m.discardPile) > 0 {
+    //     view += fmt.Sprintf("\n%v top card in discard pile", m.discardPile[len(m.discardPile)-1].Render())
+    // }
 
     return view
 }
