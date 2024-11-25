@@ -13,7 +13,7 @@ import (
 type model struct {
     formation models.Formation
     deck models.Deck
-    discardPile []models.Card
+    discardPile models.DiscardPile
 }
 
 func initialModel() model {
@@ -34,10 +34,11 @@ func initialModel() model {
     }
 
     var formation models.Formation
+    var discardPile models.DiscardPile
     return model{
         formation: formation.Init(formationCards),
         deck: deck,
-        discardPile: []models.Card{},
+        discardPile: discardPile.Init(),
     }
 }
 
@@ -57,7 +58,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
                 // TODO: set an error message in the model to display
                 log.Fatalf("no cards left")
             }
-            m.discardPile = append(m.discardPile, card)
+            m.discardPile.Add(card)
 
             return m, nil
         }
@@ -67,10 +68,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    formationView := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Render(m.formation.Render())
-    formationTitle := lipgloss.NewStyle().Bold(true).Render(" Pyramid ")
+    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder())
+    titleStyle := lipgloss.NewStyle().Bold(true)
 
-    view := lipgloss.JoinVertical(lipgloss.Center, formationTitle, formationView)
+    // formation
+    view := lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Pyramid "), contentSquareStyle.Render(m.formation.Render()))
+    view += "\n"
+
+    // discard pile
+    view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Discard Pile "), contentSquareStyle.Render(m.discardPile.Render()))
+    view += "\n"
 
     // TODO: this is just for testing
     // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
