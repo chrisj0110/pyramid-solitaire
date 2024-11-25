@@ -14,7 +14,6 @@ type model struct {
     formation models.Formation
     deck models.Deck
     discardPile models.DiscardPile
-    refreshed bool
 }
 
 func initialModel() model {
@@ -40,12 +39,11 @@ func initialModel() model {
         formation: formation.Init(formationCards),
         deck: deck,
         discardPile: discardPile.Init(),
-        refreshed: false,
     }
 }
 
 func (m model) Init() tea.Cmd {
-    return nil
+    return tea.ClearScreen
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -64,8 +62,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
             return m, nil
         case "r":
-            m.refreshed = !m.refreshed
-            return m, nil
+            return m, tea.ClearScreen
         }
     }
 
@@ -77,13 +74,7 @@ func (m model) View() string {
     // example of how to calculate width:
     // width := lipgloss.Width(contentSquareStyle.Render(m.discardPile.Render()))
 
-    // TODO: this is messy, it redraws all elements by changing the width. Must be a better way
-    width := WIDTH
-    if m.refreshed {
-        width = WIDTH + 2
-    }
-
-    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(width)
+    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(WIDTH)
     titleStyle := lipgloss.NewStyle().Bold(true)
 
     // formation
