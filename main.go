@@ -14,6 +14,7 @@ type model struct {
     formation models.Formation
     deck models.Deck
     discardPile models.DiscardPile
+    refreshed bool
 }
 
 func initialModel() model {
@@ -39,6 +40,7 @@ func initialModel() model {
         formation: formation.Init(formationCards),
         deck: deck,
         discardPile: discardPile.Init(),
+        refreshed: false,
     }
 }
 
@@ -61,6 +63,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             m.discardPile.Add(card)
 
             return m, nil
+        case "r":
+            m.refreshed = !m.refreshed
+            return m, nil
         }
     }
 
@@ -68,11 +73,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    WIDTH := 55
+    WIDTH := 56 // keep this as an even number
     // example of how to calculate width:
     // width := lipgloss.Width(contentSquareStyle.Render(m.discardPile.Render()))
 
-    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(WIDTH)
+    // TODO: this is messy, it redraws all elements by changing the width. Must be a better way
+    width := WIDTH
+    if m.refreshed {
+        width = WIDTH + 2
+    }
+
+    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(width)
     titleStyle := lipgloss.NewStyle().Bold(true)
 
     // formation
@@ -82,6 +93,8 @@ func (m model) View() string {
     // discard pile
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Discard Pile "), contentSquareStyle.Render(m.discardPile.Render()))
     view += "\n"
+
+    // view += fmt.Sprintf("%v", m.refreshCount)
 
     // TODO: this is just for testing
     // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
