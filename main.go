@@ -85,8 +85,6 @@ func (m model) View() string {
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Discard Pile "), contentSquareStyle.Render(m.discardPile.Render()))
     view += "\n"
 
-    // view += fmt.Sprintf("%v", m.refreshCount)
-
     // TODO: this is just for testing
     // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
     // if len(m.discardPile) > 0 {
