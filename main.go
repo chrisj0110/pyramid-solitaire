@@ -68,7 +68,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder())
+    WIDTH := 55
+    // example of how to calculate width:
+    // width := lipgloss.Width(contentSquareStyle.Render(m.discardPile.Render()))
+
+    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(WIDTH)
     titleStyle := lipgloss.NewStyle().Bold(true)
 
     // formation
