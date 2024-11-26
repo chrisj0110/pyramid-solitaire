@@ -21,6 +21,10 @@ func (dp *DiscardPile) SelectCard() {
     dp.cards[len(dp.cards)-1].selected = true
 }
 
+func (dp *DiscardPile) UnselectCard() {
+    dp.cards[len(dp.cards)-1].selected = false
+}
+
 func (dp DiscardPile) Render() string {
     cardLen := len(dp.cards)
 

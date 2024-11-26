@@ -55,6 +55,11 @@ func (m* model) selectCard(idx int) {
     }
 }
 
+func (m* model) unselectCard() {
+    m.formation.UnselectCard()
+    m.discardPile.UnselectCard()
+}
+
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     switch msg := msg.(type) {
     case tea.KeyMsg:
@@ -96,6 +101,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             return m, nil
         case "r":
             return m, tea.ClearScreen
+        }
+
+        switch msg.Type {
+        case tea.KeyEsc:
+            m.unselectCard()
+            return m, nil
         }
     }
 
@@ -160,7 +171,7 @@ func legendRender() string {
     "r - refresh\n" +
     "n - next card\n" +
     "p - play from discard pile\n" +
-    // esc - unselect card
+    "esc - unselect card\n" +
     // u - undo
     "q - quit"
 }

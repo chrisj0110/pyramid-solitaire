@@ -57,6 +57,17 @@ func (f *Formation) SelectCard(idx int) {
     }
 }
 
+func (f *Formation) UnselectCard() {
+    // just unselect all of them
+    for row := 0; row < 7; row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil {
+                f.formationSpots[row][col].card.selected = false
+            }
+        }
+    }
+}
+
 func (f Formation) Render() string {
     ROW_OFFSETS := []int{1, 1, 1, 1, 1, 1, 1}
     var rows []string
