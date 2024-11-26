@@ -16,6 +16,8 @@ var redCard = lipgloss.NewStyle().Foreground(red).Background(white)
 var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(yellow)
 var blackCard = lipgloss.NewStyle().Foreground(black).Background(white)
 var blackSelectedCard = lipgloss.NewStyle().Foreground(black).Background(yellow)
+// TODO: add .Background(red) to make it work. Thus, we need true black here, and paint the entire pyramid area with true black background too
+var emptySpot = lipgloss.NewStyle()
 
 func (c Card) Render() string {
     content := " " + c.Rank.String() + c.Suit.String() + " "
@@ -32,6 +34,11 @@ func (c Card) Render() string {
             return blackCard.Render(content)
         }
     }
+}
+
+func RenderEmptySpot() string {
+    content := " " + " " + "   " + " "
+    return emptySpot.Render(content)
 }
 
 type CardRank int

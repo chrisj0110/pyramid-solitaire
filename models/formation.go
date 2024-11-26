@@ -59,7 +59,7 @@ func (f *Formation) SelectCard(idx int) {
 
 func (f *Formation) UnselectCard() {
     // just unselect all of them
-    for row := 0; row < 7; row++ {
+    for row := 0; row < len(f.formationSpots); row++ {
         for col := 0; col < len(f.formationSpots[row]); col++ {
             if f.formationSpots[row][col].card != nil {
                 f.formationSpots[row][col].card.selected = false
@@ -68,13 +68,43 @@ func (f *Formation) UnselectCard() {
     }
 }
 
+func (f *Formation) RemoveSelectedCards() {
+    // just go through all of them
+    for row := 0; row < len(f.formationSpots); row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil && f.formationSpots[row][col].card.selected {
+                f.formationSpots[row][col].card.selected = false
+                f.formationSpots[row][col].card = nil
+            }
+        }
+    }
+}
+
+func (f Formation) GetSelectedCards() []Card {
+    // just go through all of them
+    cards := []Card{}
+    for row := 0; row < len(f.formationSpots); row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil && f.formationSpots[row][col].card.selected {
+                cards = append(cards, *f.formationSpots[row][col].card)
+            }
+        }
+    }
+    return cards
+}
+
 func (f Formation) Render() string {
     ROW_OFFSETS := []int{1, 1, 1, 1, 1, 1, 1}
     var rows []string
     for row := 0; row < len(f.formationSpots); row ++ {
         render := strings.Repeat(" ", ROW_OFFSETS[row])
         for col := 0; col < len(f.formationSpots[row]); col ++ {
-            render += f.formationSpots[row][col].card.Render() + " "
+            if f.formationSpots[row][col].card == nil {
+                // if card is nil, then render an empty card
+                render += RenderEmptySpot() + " "
+            } else {
+                render += f.formationSpots[row][col].card.Render() + " "
+            }
         }
         rows = append(rows, render)
     }

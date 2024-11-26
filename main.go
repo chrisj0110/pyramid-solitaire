@@ -14,6 +14,7 @@ type model struct {
     formation models.Formation
     deck models.Deck
     discardPile models.DiscardPile
+    message string
 }
 
 func initialModel() model {
@@ -39,6 +40,7 @@ func initialModel() model {
         formation: formation.Init(formationCards),
         deck: deck,
         discardPile: discardPile.Init(),
+        message: "",
     }
 }
 
@@ -60,7 +62,27 @@ func (m* model) unselectCard() {
     m.discardPile.UnselectCard()
 }
 
+func (m* model) removeSelectedCards() {
+    m.formation.RemoveSelectedCards()
+    m.discardPile.RemoveSelectedCards()
+}
+
+func (m model) getSelectedCards() []models.Card {
+    cards := m.formation.GetSelectedCards()
+    return append(cards, m.discardPile.GetSelectedCards()...)
+}
+
+func (m* model) tryPlayCards() {
+    cards := m.getSelectedCards()
+    if len(cards) == 1 && int(cards[0].Rank) == 13 {
+        m.removeSelectedCards()
+    } else if len(cards) == 2 && int(cards[0].Rank) + int(cards[1].Rank) == 13 {
+        m.removeSelectedCards()
+    }
+}
+
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+    m.message = ""
     switch msg := msg.(type) {
     case tea.KeyMsg:
         switch msg.String() {
@@ -68,27 +90,35 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             return m, tea.Quit
         case "a":
             m.selectCard(0)
+            m.tryPlayCards()
             return m, nil
         case "s":
             m.selectCard(1)
+            m.tryPlayCards()
             return m, nil
         case "d":
             m.selectCard(2)
+            m.tryPlayCards()
             return m, nil
         case "f":
             m.selectCard(3)
+            m.tryPlayCards()
             return m, nil
         case "j":
             m.selectCard(4)
+            m.tryPlayCards()
             return m, nil
         case "k":
             m.selectCard(5)
+            m.tryPlayCards()
             return m, nil
         case "l":
             m.selectCard(6)
+            m.tryPlayCards()
             return m, nil
         case "p":
             m.selectCard(7)
+            m.tryPlayCards()
             return m, nil
         case "c":
             m.unselectCard()
@@ -136,34 +166,12 @@ func (m model) View() string {
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Legend "), contentSquareStyle.Render(legendRender()))
     view += "\n"
 
-    // TODO: this is just for testing
-    // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
-    // if len(m.discardPile) > 0 {
-    //     view += fmt.Sprintf("\n%v top card in discard pile", m.discardPile[len(m.discardPile)-1].Render())
-    // }
+    // message
+    view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Message "), contentSquareStyle.Render(m.message))
+    view += "\n"
 
     return view
 }
-
-// TODO: why doesn't this work?
-// go get github.com/charmbracelet/bubbles/table
-// func legendRender() string {
-//     columns := []table.Column{
-//         {Title:"Key"},
-//         {Title:"Action"},
-//     }
-//     rows := []table.Row{
-//         {"asdfjkl", "select from formation"},
-//         {"r", "refresh"},
-//         {"n", "next card"},
-//         // p - play from discard pile
-//         // esc - unselect card
-//         // u - undo
-//         {"q", "quit"},
-//     }
-//     t := table.New(table.WithColumns(columns), table.WithRows(rows))
-//     return t.View()
-// }
 
 func legendRender() string {
     return "asdfjkl - select from formation\n" +

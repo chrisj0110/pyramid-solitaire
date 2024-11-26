@@ -31,6 +31,32 @@ func (dp *DiscardPile) UnselectCard() {
     }
 }
 
+func (dp *DiscardPile) RemoveSelectedCards() {
+    // build a new list, don't include cards to be removed
+    newCardList := []Card{}
+
+    // just go through all of them
+    for idx := 0; idx < len(dp.cards); idx++ {
+        if dp.cards[idx].selected {
+            dp.cards[idx].selected = false
+        } else {
+            newCardList = append(newCardList, dp.cards[idx])
+        }
+    }
+    dp.cards = newCardList
+}
+
+func (dp DiscardPile) GetSelectedCards() []Card {
+    // just go through all of them
+    cards := []Card{}
+    for idx := 0; idx < len(dp.cards); idx++ {
+        if dp.cards[idx].selected {
+            cards = append(cards, dp.cards[idx])
+        }
+    }
+    return cards
+}
+
 func (dp DiscardPile) Render() string {
     cardLen := len(dp.cards)
 
