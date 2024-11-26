@@ -5,20 +5,32 @@ import "github.com/charmbracelet/lipgloss"
 type Card struct {
     Rank CardRank
     Suit CardSuit
+    selected bool
 }
 
 var black = lipgloss.Color("0")
 var red = lipgloss.Color("9")
+var yellow = lipgloss.Color("11")
 var white = lipgloss.Color("15")
 var redCard = lipgloss.NewStyle().Foreground(red).Background(white)
+var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(yellow)
 var blackCard = lipgloss.NewStyle().Foreground(black).Background(white)
+var blackSelectedCard = lipgloss.NewStyle().Foreground(black).Background(yellow)
 
 func (c Card) Render() string {
     content := " " + c.Rank.String() + c.Suit.String() + " "
     if c.Suit.isRed() {
-        return redCard.Render(content) 
+        if c.selected {
+            return redSelectedCard.Render(content)
+        } else {
+            return redCard.Render(content)
+        }
     } else {
-        return blackCard.Render(content)
+        if c.selected {
+            return blackSelectedCard.Render(content)
+        } else {
+            return blackCard.Render(content)
+        }
     }
 }
 

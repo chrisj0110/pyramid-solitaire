@@ -17,6 +17,10 @@ func (dp *DiscardPile) Add(card Card) {
     dp.cards = append(dp.cards, card)
 }
 
+func (dp *DiscardPile) SelectCard() {
+    dp.cards[len(dp.cards)-1].selected = true
+}
+
 func (dp DiscardPile) Render() string {
     cardLen := len(dp.cards)
 

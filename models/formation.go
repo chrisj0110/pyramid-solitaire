@@ -47,6 +47,16 @@ func (f *Formation) Init(cards []Card) Formation {
     return formation
 }
 
+func (f *Formation) SelectCard(idx int) {
+    // find the lowest card in the formation and select it
+    for row := 6; row >= 0; row-- {
+        if f.formationSpots[row][idx].card != nil {
+            f.formationSpots[row][idx].card.selected = true
+            return
+        }
+    }
+}
+
 func (f Formation) Render() string {
     ROW_OFFSETS := []int{1, 1, 1, 1, 1, 1, 1}
     var rows []string

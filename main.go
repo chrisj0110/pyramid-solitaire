@@ -46,12 +46,45 @@ func (m model) Init() tea.Cmd {
     return tea.ClearScreen
 }
 
+// 0-6 for diagonals in the formation; 7 for discard pile
+func (m* model) selectCard(idx int) {
+    if idx < 7 {
+        m.formation.SelectCard(idx)
+    } else {
+        m.discardPile.SelectCard()
+    }
+}
+
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     switch msg := msg.(type) {
     case tea.KeyMsg:
         switch msg.String() {
         case "ctrl+c", "q":
             return m, tea.Quit
+        case "a":
+            m.selectCard(0)
+            return m, nil
+        case "s":
+            m.selectCard(1)
+            return m, nil
+        case "d":
+            m.selectCard(2)
+            return m, nil
+        case "f":
+            m.selectCard(3)
+            return m, nil
+        case "j":
+            m.selectCard(4)
+            return m, nil
+        case "k":
+            m.selectCard(5)
+            return m, nil
+        case "l":
+            m.selectCard(6)
+            return m, nil
+        case "p":
+            m.selectCard(7)
+            return m, nil
         case "n":
             card, err := m.deck.Draw()
             if err != nil {
@@ -126,7 +159,7 @@ func legendRender() string {
     return "asdfjkl - select from formation\n" +
     "r - refresh\n" +
     "n - next card\n" +
-    // p - play from discard pile
+    "p - play from discard pile\n" +
     // esc - unselect card
     // u - undo
     "q - quit"
