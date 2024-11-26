@@ -18,11 +18,17 @@ func (dp *DiscardPile) Add(card Card) {
 }
 
 func (dp *DiscardPile) SelectCard() {
+    if len(dp.cards) == 0 {
+        return
+    }
     dp.cards[len(dp.cards)-1].selected = true
 }
 
 func (dp *DiscardPile) UnselectCard() {
-    dp.cards[len(dp.cards)-1].selected = false
+    // just unselect all of them
+    for idx := 0; idx < len(dp.cards); idx++ {
+        dp.cards[idx].selected = false
+    }
 }
 
 func (dp DiscardPile) Render() string {

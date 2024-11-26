@@ -101,6 +101,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             }
             m.discardPile.Add(card)
 
+            m.unselectCard()
+
             return m, nil
         case "r":
             return m, tea.ClearScreen
