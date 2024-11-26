@@ -89,6 +89,10 @@ func (m model) View() string {
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Deck "), contentSquareStyle.Render(m.deck.Render()))
     view += "\n"
 
+    // legend
+    view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Legend "), contentSquareStyle.Render(legendRender()))
+    view += "\n"
+
     // TODO: this is just for testing
     // view += fmt.Sprintf("\n%v cards remaining in deck", m.deck.GetRemainingCount())
     // if len(m.discardPile) > 0 {
@@ -96,6 +100,36 @@ func (m model) View() string {
     // }
 
     return view
+}
+
+// TODO: why doesn't this work?
+// go get github.com/charmbracelet/bubbles/table
+// func legendRender() string {
+//     columns := []table.Column{
+//         {Title:"Key"},
+//         {Title:"Action"},
+//     }
+//     rows := []table.Row{
+//         {"asdfjkl", "select from formation"},
+//         {"r", "refresh"},
+//         {"n", "next card"},
+//         // p - play from discard pile
+//         // esc - unselect card
+//         // u - undo
+//         {"q", "quit"},
+//     }
+//     t := table.New(table.WithColumns(columns), table.WithRows(rows))
+//     return t.View()
+// }
+
+func legendRender() string {
+    return "asdfjkl - select from formation\n" +
+    "r - refresh\n" +
+    "n - next card\n" +
+    // p - play from discard pile
+    // esc - unselect card
+    // u - undo
+    "q - quit"
 }
 
 func main() {
