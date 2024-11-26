@@ -90,6 +90,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         case "p":
             m.selectCard(7)
             return m, nil
+        case "c":
+            m.unselectCard()
+            return m, nil
         case "n":
             card, err := m.deck.Draw()
             if err != nil {
@@ -101,12 +104,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             return m, nil
         case "r":
             return m, tea.ClearScreen
-        }
-
-        switch msg.Type {
-        case tea.KeyEsc:
-            m.unselectCard()
-            return m, nil
         }
     }
 
@@ -171,7 +168,7 @@ func legendRender() string {
     "r - refresh\n" +
     "n - next card\n" +
     "p - play from discard pile\n" +
-    "esc - unselect card\n" +
+    "c - change mind\n" +
     // u - undo
     "q - quit"
 }
