@@ -8,6 +8,7 @@ type Card struct {
     selected bool
 }
 
+var trueBlack = lipgloss.Color("#000000")
 var black = lipgloss.Color("0")
 var red = lipgloss.Color("9")
 var yellow = lipgloss.Color("11")
@@ -16,8 +17,7 @@ var redCard = lipgloss.NewStyle().Foreground(red).Background(white)
 var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(yellow)
 var blackCard = lipgloss.NewStyle().Foreground(black).Background(white)
 var blackSelectedCard = lipgloss.NewStyle().Foreground(black).Background(yellow)
-// TODO: add .Background(red) to make it work. Thus, we need true black here, and paint the entire pyramid area with true black background too
-var emptySpot = lipgloss.NewStyle()
+var emptySpot = lipgloss.NewStyle().Background(trueBlack)
 
 func (c Card) Render() string {
     content := " " + c.Rank.String() + c.Suit.String() + " "

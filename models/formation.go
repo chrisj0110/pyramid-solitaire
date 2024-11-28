@@ -3,6 +3,7 @@ package models
 import (
 	"log"
 	"strings"
+    "github.com/charmbracelet/lipgloss"
 )
 
 type Location struct {
@@ -94,16 +95,19 @@ func (f Formation) GetSelectedCards() []Card {
 }
 
 func (f Formation) Render() string {
+    trueBlack := lipgloss.Color("#000000")
+    emptySpace := lipgloss.NewStyle().Background(trueBlack)
+
     ROW_OFFSETS := []int{1, 1, 1, 1, 1, 1, 1}
     var rows []string
     for row := 0; row < len(f.formationSpots); row ++ {
-        render := strings.Repeat(" ", ROW_OFFSETS[row])
+        render := strings.Repeat(emptySpace.Render(" "), ROW_OFFSETS[row])
         for col := 0; col < len(f.formationSpots[row]); col ++ {
             if f.formationSpots[row][col].card == nil {
                 // if card is nil, then render an empty card
-                render += RenderEmptySpot() + " "
+                render += RenderEmptySpot() + emptySpace.Render(" ")
             } else {
-                render += f.formationSpots[row][col].card.Render() + " "
+                render += f.formationSpots[row][col].card.Render() + emptySpace.Render(" ")
             }
         }
         rows = append(rows, render)

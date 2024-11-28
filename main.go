@@ -147,7 +147,8 @@ func (m model) View() string {
     // example of how to calculate width:
     // width := lipgloss.Width(contentSquareStyle.Render(m.discardPile.Render()))
 
-    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(WIDTH)
+    trueBlack := lipgloss.Color("#000000")
+    contentSquareStyle := lipgloss.NewStyle().Align(lipgloss.Center, lipgloss.Center).BorderStyle(lipgloss.RoundedBorder()).Width(WIDTH).Background(trueBlack)
     titleStyle := lipgloss.NewStyle().Bold(true)
 
     // formation
