@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"strings"
     "github.com/charmbracelet/lipgloss"
@@ -48,14 +49,18 @@ func (f *Formation) Init(cards []Card) Formation {
     return formation
 }
 
-func (f *Formation) SelectCard(idx int) {
+func (f *Formation) SelectCard(idx int) error {
     // find the lowest card in the formation and select it
     for row := 6; row >= 0; row-- {
+        if idx >= len(f.formationSpots[row]) {
+            return fmt.Errorf("invalid index %v", idx)
+        }
         if f.formationSpots[row][idx].card != nil {
             f.formationSpots[row][idx].card.selected = true
-            return
+            return nil
         }
     }
+    return fmt.Errorf("no card found at index %v", idx)
 }
 
 func (f *Formation) UnselectCard() {

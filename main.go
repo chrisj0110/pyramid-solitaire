@@ -51,7 +51,10 @@ func (m model) Init() tea.Cmd {
 // 0-6 for diagonals in the formation; 7 for discard pile
 func (m* model) selectCard(idx int) {
     if idx < 7 {
-        m.formation.SelectCard(idx)
+        err := m.formation.SelectCard(idx)
+        if err != nil {
+            m.message = fmt.Sprintf("%v", err)
+        }
     } else {
         m.discardPile.SelectCard()
     }
