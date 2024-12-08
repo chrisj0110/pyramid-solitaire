@@ -51,11 +51,25 @@ func (f *Formation) Init(cards []Card) Formation {
 func (f *Formation) SelectCard(cardRank CardRank, cardSuit CardSuit) bool {
     for row := 0; row <= 6; row++ {
         for col := 0; col < len(f.formationSpots[row]); col++ {
-            if f.formationSpots[row][col].card != nil && f.formationSpots[row][col].card.Rank == cardRank && f.formationSpots[row][col].card.Suit == cardSuit {
-                f.formationSpots[row][col].card.selected = true
+            card := f.formationSpots[row][col].card
+            if card != nil && card.Rank == cardRank && card.Suit == cardSuit && !f.isCovered(row, col) {
+                card.selected = true
                 return true
             }
         }
+    }
+    return false
+}
+
+func (f Formation) isCovered(row int, col int) bool {
+    cell := f.formationSpots[row][col]
+
+    if len(cell.coveredBy) == 0 {
+        return false
+    }
+
+    if f.formationSpots[cell.coveredBy[0].row][cell.coveredBy[0].col].card != nil || f.formationSpots[cell.coveredBy[1].row][cell.coveredBy[1].col].card != nil {
+        return true
     }
     return false
 }
