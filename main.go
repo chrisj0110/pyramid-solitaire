@@ -113,6 +113,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             }
 
             m.tryPlayCards()
+            if m.formation.IsGameOver() {
+                m.message = "YOU WIN!!!"
+                return m, tea.Quit
+            }
             return m, nil
         case "u":
             // TODO: or if card isn't selected, undo the last turn
@@ -121,8 +125,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         case "n":
             card, err := m.deck.Draw()
             if err != nil {
-                // TODO: set an error message in the model to display
-                log.Fatalf("no cards left")
+                m.message = "No cards left!"
+                return m, nil
             }
             m.discardPile.Add(card)
 

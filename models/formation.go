@@ -74,6 +74,17 @@ func (f Formation) isCovered(row int, col int) bool {
     return false
 }
 
+func (f Formation) IsGameOver() bool {
+    for row := 0; row <= 6; row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil {
+                return false
+            }
+        }
+    }
+    return true
+}
+
 func (f *Formation) UnselectCard() {
     // just unselect all of them
     for row := 0; row < len(f.formationSpots); row++ {
