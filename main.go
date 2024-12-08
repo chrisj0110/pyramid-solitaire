@@ -88,6 +88,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         switch msg.String() {
         case "ctrl+c", "Q":
             return m, tea.Quit
+        case "G":
+            m = initialModel()
+            return m, nil
         case "a", "2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k":
             m.selectedRank = models.CardRankFromString(msg.String())
             if m.selectedRank == nil {
@@ -180,6 +183,7 @@ func legendRender() string {
     "n - next card\n" +
     "p - play from discard pile\n" +
     "u - undo\n" +
+    "G - new game\n" +
     "Q - quit"
 }
 
