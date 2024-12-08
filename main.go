@@ -15,6 +15,7 @@ type model struct {
     deck models.Deck
     discardPile models.DiscardPile
     message string
+    selectedRank *models.CardRank
 }
 
 func initialModel() model {
@@ -41,6 +42,7 @@ func initialModel() model {
         deck: deck,
         discardPile: discardPile.Init(),
         message: "",
+        selectedRank: nil,
     }
 }
 
@@ -48,16 +50,11 @@ func (m model) Init() tea.Cmd {
     return tea.ClearScreen
 }
 
-// 0-6 for diagonals in the formation; 7 for discard pile
-func (m* model) selectCard(idx int) {
-    if idx < 7 {
-        err := m.formation.SelectCard(idx)
-        if err != nil {
-            m.message = fmt.Sprintf("%v", err)
-        }
-    } else {
-        m.discardPile.SelectCard()
+func (m* model) selectCard(cardRank models.CardRank, cardSuit models.CardSuit) error {
+    if !m.formation.SelectCard(cardRank, cardSuit) && !m.discardPile.SelectCard(cardRank, cardSuit) {
+        return fmt.Errorf("no card found to play")
     }
+    return nil
 }
 
 func (m* model) unselectCard() {
@@ -89,41 +86,36 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     switch msg := msg.(type) {
     case tea.KeyMsg:
         switch msg.String() {
-        case "ctrl+c", "q":
+        case "ctrl+c", "Q":
             return m, tea.Quit
-        case "a":
-            m.selectCard(0)
+        case "a", "2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k":
+            m.selectedRank = models.CardRankFromString(msg.String())
+            if m.selectedRank == nil {
+                log.Fatalf("card rank not found")
+            }
+
+            m.message = "now select suit"
+            return m, nil
+        case "c", "d", "h", "s":
+            if m.selectedRank == nil {
+                m.message = "you need to choose a card rank before a card suit"
+                return m, nil
+            }
+
+            selectedSuit := models.CardSuitFromString(msg.String())
+            if selectedSuit == nil {
+                log.Fatalf("card suit not found")
+            }
+            err := m.selectCard(*m.selectedRank, *selectedSuit)
+            if err != nil {
+                m.message = fmt.Sprintf("%v", err)
+                return m, nil
+            }
+
             m.tryPlayCards()
             return m, nil
-        case "s":
-            m.selectCard(1)
-            m.tryPlayCards()
-            return m, nil
-        case "d":
-            m.selectCard(2)
-            m.tryPlayCards()
-            return m, nil
-        case "f":
-            m.selectCard(3)
-            m.tryPlayCards()
-            return m, nil
-        case "j":
-            m.selectCard(4)
-            m.tryPlayCards()
-            return m, nil
-        case "k":
-            m.selectCard(5)
-            m.tryPlayCards()
-            return m, nil
-        case "l":
-            m.selectCard(6)
-            m.tryPlayCards()
-            return m, nil
-        case "p":
-            m.selectCard(7)
-            m.tryPlayCards()
-            return m, nil
-        case "c":
+        case "u":
+            // TODO: or if card isn't selected, undo the last turn
             m.unselectCard()
             return m, nil
         case "n":
@@ -178,13 +170,13 @@ func (m model) View() string {
 }
 
 func legendRender() string {
-    return "asdfjkl - select from formation\n" +
+    return "a, 2-9, t, j, q, k - select from formation\n" +
+    "c - clubs, d - diamonds, h - hearts, s - spades\n" +
     "r - refresh\n" +
     "n - next card\n" +
     "p - play from discard pile\n" +
-    "c - change mind\n" +
-    // u - undo
-    "q - quit"
+    "u - undo\n" +
+    "Q - quit"
 }
 
 func main() {

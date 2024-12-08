@@ -1,6 +1,8 @@
 package models
 
-import "github.com/charmbracelet/lipgloss"
+import (
+    "github.com/charmbracelet/lipgloss"
+)
 
 type Card struct {
     Rank CardRank
@@ -63,6 +65,29 @@ func (r CardRank) String() string {
     return [...]string{" A", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", " J", " Q", " K"}[r-1]
 }
 
+var commandToCardRank = map[string]CardRank{
+    "a": Ace,
+    "2": Two,
+    "3": Three,
+    "4": Four,
+    "5": Five,
+    "6": Six,
+    "7": Seven,
+    "8": Eight,
+    "9": Nine,
+    "t": Ten,
+    "j": Jack,
+    "q": Queen,
+    "k": King,
+}
+
+func CardRankFromString(menuCommand string) *CardRank {
+    if rank, ok := commandToCardRank[menuCommand]; ok {
+        return &rank
+    }
+    return nil
+}
+
 type CardSuit int
 
 const (
@@ -82,3 +107,18 @@ func (s CardSuit) isRed() bool {
     }
     return true
 }
+
+var commandToCardSuit = map[string]CardSuit{
+    "c": Clubs,
+    "d": Diamonds,
+    "h": Hearts,
+    "s": Spades,
+}
+
+func CardSuitFromString(menuCommand string) *CardSuit {
+    if suit, ok := commandToCardSuit[menuCommand]; ok {
+        return &suit
+    }
+    return nil
+}
+

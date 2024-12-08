@@ -17,11 +17,30 @@ func (dp *DiscardPile) Add(card Card) {
     dp.cards = append(dp.cards, card)
 }
 
-func (dp *DiscardPile) SelectCard() {
+func (dp *DiscardPile) SelectCard(cardRank CardRank, cardSuit CardSuit) bool {
     if len(dp.cards) == 0 {
-        return
+        return false
     }
-    dp.cards[len(dp.cards)-1].selected = true
+
+    if dp.cards[len(dp.cards)-1].selected {
+        // look at 2nd to last card
+        if len(dp.cards) == 1 {
+            return false // there is no second to last card
+        }
+
+        if dp.cards[len(dp.cards)-2].Rank == cardRank && dp.cards[len(dp.cards)-2].Suit == cardSuit {
+            dp.cards[len(dp.cards)-2].selected = true
+            return true
+        }
+    } else {
+        // look at the last card
+        if dp.cards[len(dp.cards)-1].Rank == cardRank && dp.cards[len(dp.cards)-1].Suit == cardSuit {
+            dp.cards[len(dp.cards)-1].selected = true
+            return true
+        }
+    }
+
+    return false
 }
 
 func (dp *DiscardPile) UnselectCard() {
