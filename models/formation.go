@@ -1,9 +1,11 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"strings"
-    "github.com/charmbracelet/lipgloss"
+
+	"github.com/charmbracelet/lipgloss"
 )
 
 type Location struct {
@@ -75,14 +77,7 @@ func (f Formation) isCovered(row int, col int) bool {
 }
 
 func (f Formation) IsGameOver() bool {
-    for row := 0; row <= 6; row++ {
-        for col := 0; col < len(f.formationSpots[row]); col++ {
-            if f.formationSpots[row][col].card != nil {
-                return false
-            }
-        }
-    }
-    return true
+    return f.getRemainingCards() == 0
 }
 
 func (f *Formation) UnselectCard() {
@@ -121,6 +116,31 @@ func (f Formation) GetSelectedCards() []Card {
     return cards
 }
 
+func (f Formation) getRemainingCards() int {
+    remainingCards := 0
+    for row := 0; row <= 6; row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil {
+                remainingCards += 1
+            }
+        }
+    }
+    return remainingCards
+}
+
+func (f Formation) getRemainingRows() int {
+    remainingRows := 0
+    for row := 0; row <= 6; row++ {
+        for col := 0; col < len(f.formationSpots[row]); col++ {
+            if f.formationSpots[row][col].card != nil {
+                remainingRows += 1
+                break
+            }
+        }
+    }
+    return remainingRows
+}
+
 func (f Formation) Render() string {
     trueBlack := lipgloss.Color("#000000")
     emptySpace := lipgloss.NewStyle().Background(trueBlack)
@@ -140,4 +160,8 @@ func (f Formation) Render() string {
         rows = append(rows, render)
     }
     return strings.Join(rows, "\n")
+}
+
+func (f Formation) RenderRemaining() string {
+    return fmt.Sprintf("Remaining cards: %v\nRemaining rows: %v", f.getRemainingCards(), f.getRemainingRows())
 }

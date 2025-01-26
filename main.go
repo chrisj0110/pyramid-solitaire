@@ -165,6 +165,10 @@ func (m model) View() string {
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Deck "), contentSquareStyle.Render(m.deck.Render()))
     view += "\n"
 
+    // remaining
+    view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Remaining "), contentSquareStyle.Render(m.formation.RenderRemaining()))
+    view += "\n"
+
     // legend
     view += lipgloss.JoinVertical(lipgloss.Center, titleStyle.Render(" Legend "), contentSquareStyle.Render(legendRender()))
     view += "\n"
