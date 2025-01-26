@@ -11,10 +11,10 @@ type Card struct {
 }
 
 var trueBlack = lipgloss.Color("#000000")
-var black = lipgloss.Color("0")
-var red = lipgloss.Color("9")
-var yellow = lipgloss.Color("11")
-var white = lipgloss.Color("15")
+var black = lipgloss.Color("#1e1e2e")
+var red = lipgloss.Color("#f38ba8")
+var yellow = lipgloss.Color("#f9e2af")
+var white = lipgloss.Color("#f5e0dc")
 var redCard = lipgloss.NewStyle().Foreground(red).Background(white).Bold(true)
 var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(yellow).Bold(true)
 var blackCard = lipgloss.NewStyle().Foreground(black).Background(white).Bold(true)

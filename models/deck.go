@@ -12,8 +12,8 @@ type Deck struct {
     cards []Card
 }
 
-var darkGreen = lipgloss.Color("22")
-var cardBack = lipgloss.NewStyle().Foreground(white).Background(darkGreen)
+var darkGreen = lipgloss.Color("#a6e3a1")
+var cardBack = lipgloss.NewStyle().Foreground(black).Background(darkGreen)
 
 func (d *Deck) Init() Deck {
     var deck Deck
