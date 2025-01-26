@@ -179,7 +179,7 @@ func (m model) View() string {
 func legendRender() string {
     return "a, 2-9, t, j, q, k - select from formation\n" +
     "c - clubs, d - diamonds, h - hearts, s - spades\n" +
-    "r - refresh\n" +
+    "r - refresh UI\n" +
     "n - next card\n" +
     "p - play from discard pile\n" +
     "u - undo\n" +
