@@ -12,13 +12,13 @@ type Card struct {
 
 var trueBlack = lipgloss.Color("#000000")
 var black = lipgloss.Color("#1e1e2e")
-var red = lipgloss.Color("#f38ba8")
-var yellow = lipgloss.Color("#f9e2af")
+var red = lipgloss.Color("#d20f39")
+var orange = lipgloss.Color("#fab387")
 var white = lipgloss.Color("#f5e0dc")
 var redCard = lipgloss.NewStyle().Foreground(red).Background(white).Bold(true)
-var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(yellow).Bold(true)
+var redSelectedCard = lipgloss.NewStyle().Foreground(red).Background(orange).Bold(true)
 var blackCard = lipgloss.NewStyle().Foreground(black).Background(white).Bold(true)
-var blackSelectedCard = lipgloss.NewStyle().Foreground(black).Background(yellow).Bold(true)
+var blackSelectedCard = lipgloss.NewStyle().Foreground(black).Background(orange).Bold(true)
 var emptySpot = lipgloss.NewStyle().Background(trueBlack)
 
 func (c Card) Render() string {
